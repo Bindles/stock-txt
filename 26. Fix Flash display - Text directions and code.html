@@ -1,0 +1,1 @@
+<p>To fix the double flash display, go to _result.html.erb and surround the flash div in an if condition as below:<br>&lt;% if params[:action] == 'search' %&gt;<br>&nbsp; &lt;div class="results-block"&gt;<br>&nbsp; &nbsp; &lt;%= bootstrap_flash %&gt;<br>&nbsp; &lt;/div&gt;<br>&lt;% end %&gt;</p>

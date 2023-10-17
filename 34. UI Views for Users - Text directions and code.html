@@ -1,0 +1,27 @@
+<p>Go to app/views/layouts/application.html.erb and add in the UI links:<br>Put the links in the navigation within an if block</p>
+
+<p>&lt;% if current_user %&gt;<br>.<br>.<br>&lt;% end %&gt;</p>
+
+<p>Update the links (link1, link2 etc):<br>&lt;li&gt;&lt;%= link_to "My Portfolio", my_portfolio_path&nbsp; %&gt;&lt;/li&gt;<br>&lt;li&gt;&lt;%= link_to "My Profile", edit_registration_path(current_user) %&gt;&lt;/li&gt;</p>
+
+<p>Add a class of col-md-6 to the ul class nav, navbar-nav&nbsp;</p>
+
+<p>Add a ul tag for user name display and logging out:<br>&lt;ul class="nav navbar-right col-md-4"&gt;<br>&nbsp; &lt;li class="col-md-8 user-name text-right"&gt;<br>&nbsp; &nbsp; &lt;i class="fa fa-user"&gt;&lt;/i&gt;<br>&nbsp; &nbsp; &lt;%= current_user.full_name.present? ? current_user.full_name : current_user.email %&gt;<br>&nbsp; &lt;/li&gt;<br>&nbsp; &lt;li class="col-md-4 logout"&gt;<br>&nbsp; &nbsp; &lt;%= link_to("logout", destroy_user_session_path,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class: "btn btn-xs btn-danger", method: :delete) %&gt;<br>&nbsp; &lt;/li&gt;<br>&lt;/ul&gt;</p>
+
+<p>Now add some styling for the classes introduced in your custom.css.scss&nbsp;<br>or application.css.scss:</p>
+
+<p>.logout {<br>&nbsp; padding-left: 0;<br>}</p>
+
+<p>.user-name {<br>&nbsp; padding-top: 15px;<br>}</p>
+
+<p>.nav.navbar-right li {<br>&nbsp; .btn {<br>&nbsp; &nbsp; color: #fff !important;<br>&nbsp; &nbsp; margin-top: 5%;<br>&nbsp; }<br>&nbsp; .btn-danger:hover {<br>&nbsp; &nbsp; background-color: darken(#d9534f, 20%) !important;<br>&nbsp; }<br>}</p>
+
+<p>Now move the navigation code to a _navigation.html.erb partial under app/views/layouts<br>folder (from right under &lt;body&gt; tag in application.html.erb file till the div class<br>container code), note also the finance tracker brand is moved out of the if current_user<br>branch:</p>
+
+<p>&lt;div class="navbar navbar-default navbar-static-top"&gt;<br>&nbsp; &lt;div class="container"&gt;<br>&nbsp; &nbsp; &lt;%= link_to "Finance Tracker", root_path, class: "navbar-brand" %&gt;<br>&nbsp; &nbsp; &lt;% if current_user %&gt;<br>&nbsp; &nbsp; &nbsp; &lt;button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;span class="icon-bar"&gt;&lt;/span&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;span class="icon-bar"&gt;&lt;/span&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;span class="icon-bar"&gt;&lt;/span&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/button&gt;</p>
+
+<p>&nbsp; &nbsp; &nbsp; &lt;div class="navbar-collapse collapse navbar-responsive-collapse"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;ul class="nav navbar-nav col-md-6"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;li&gt;&lt;%= link_to "My Portfolio", my_portfolio_path&nbsp; %&gt;&lt;/li&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;li&gt;&lt;%= link_to "My Profile", edit_registration_path(current_user) %&gt;&lt;/li&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;li&gt;&lt;%= link_to "link3", "#" %&gt;&lt;/li&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;/ul&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;ul class="nav navbar-right col-md-4"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;li class="col-md-8 user-name text-right"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class="fa fa-user"&gt;&lt;/i&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;%= current_user.full_name.present? ? current_user.full_name : current_user.email %&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/li&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;li class="col-md-4 logout"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;%= link_to("logout", destroy_user_session_path,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class: "btn btn-xs btn-danger", method: :delete) %&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/li&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;/ul&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &lt;% end %&gt;<br>&nbsp; &lt;/div&gt;<br>&lt;/div&gt;</p>
+
+<p>Then in the application.html.erb reference this by adding the code below:<br>&lt;%= render 'layouts/navigation' %&gt;</p>
+
+<p>Remove the logout link from the root_path, app/views/welome/index.html.erb</p>

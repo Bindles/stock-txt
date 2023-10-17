@@ -1,0 +1,15 @@
+<p>Add the 3 methods first in the user.rb model file:</p>
+
+<p>&nbsp; def stock_already_added?(ticker_symbol)<br>&nbsp; &nbsp; stock = Stock.find_by_ticker(ticker_symbol)<br>&nbsp; &nbsp; return false unless stock<br>&nbsp; &nbsp; user_stocks.where(stock_id: stock.id).exists?<br>&nbsp; end<br>&nbsp;&nbsp;<br>&nbsp; def under_stock_limit?<br>&nbsp; &nbsp; (user_stocks.count &lt; 10)<br>&nbsp; end<br>&nbsp;&nbsp;<br>&nbsp; def can_add_stock?(ticker_symbol)<br>&nbsp; &nbsp; under_stock_limit? && !stock_already_added?(ticker_symbol)<br>&nbsp; end</p>
+
+
+
+<p>Make sure you have the find_by_ticker method in your stock.rb model file:</p>
+
+
+
+<p>&nbsp; def self.find_by_ticker(ticker_symbol)<br>&nbsp; &nbsp; where(ticker: ticker_symbol).first<br>&nbsp; end</p>
+
+
+
+<p>Now go to _result.html.erb under app/views/users folder and add the restrictions to the view:<br>&lt;% if current_user.can_add_stock?(@stock.ticker) %&gt;<br>&nbsp; &lt;%= link_to "Add to my stocks",&nbsp;<br>&nbsp; &nbsp; &nbsp; user_stocks_path(user: current_user, stock_ticker: @stock.ticker),<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class: "btn btn-xs btn-success", method: :post %&gt;<br>&lt;% else %&gt;<br>&nbsp; &lt;span class="label label-default"&gt;<br>&nbsp; &nbsp; Stock cannot be added because you have already added<br>&nbsp; &nbsp; &lt;% if !current_user.under_stock_limit? %&gt;<br>&nbsp; &nbsp; &nbsp; 10 stocks<br>&nbsp; &nbsp; &lt;% end %&gt;<br>&nbsp; &nbsp; &lt;% if current_user.stock_already_added?(@stock.ticker) %&gt;<br>&nbsp; &nbsp; &nbsp; this stock<br>&nbsp; &nbsp; &lt;% end %&gt;<br>&nbsp; &lt;/span&gt;<br>&lt;% end %&gt;</p>

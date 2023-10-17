@@ -1,0 +1,25 @@
+<p>Add the friendship route in config/routes.rb file:</p>
+
+<p>&nbsp;get 'my_friends', to: 'users#my_friends'</p>
+
+<p>&nbsp;In the users_controller.rb file and add in this action:</p>
+
+<p>&nbsp;def my_friends</p>
+
+<p>&nbsp;end</p>
+
+<p>&nbsp;Add in the view, under app/views/users folder create a my_friends.html.erb file:<br>&nbsp;&lt;h1&gt;My Friends&lt;/h1&gt;</p>
+
+<p>&nbsp;Now add the friendship model, generate it:<br>&nbsp;rails generate model Friendship</p>
+
+<p>&nbsp;Add the associations-&gt;&nbsp;<br>&nbsp;in friendship.rb model file:<br>&nbsp;belongs_to :user<br>&nbsp;belongs_to :friend, :class_name =&gt; 'User'</p>
+
+<p>&nbsp;in the user.rb model file:<br>&nbsp;has_many :friendships<br>&nbsp;has_many :friends, through: :friendships</p>
+
+<p>&nbsp;Add in the updates to the latest migration file that got created:</p>
+
+<p>&nbsp; def change<br>&nbsp; &nbsp; create_table :friendships do |t|<br>&nbsp; &nbsp; &nbsp; t.belongs_to :user<br>&nbsp; &nbsp; &nbsp; t.belongs_to :friend, class: 'User'<br>&nbsp; &nbsp; &nbsp; t.timestamps<br>&nbsp; &nbsp; end<br>&nbsp; end</p>
+
+<p>Run the migration file, rake db:migrate (or rails db:migrate for rails 5)</p>
+
+<p>Test out the connection in the console</p>

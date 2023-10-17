@@ -1,0 +1,13 @@
+<p>First go to my_portfolio.html.erb file and render a partial at the bottom<br>&lt;%= render 'stocks/list' %&gt;</p>
+
+<p>Then create a new folder called stocks under app/views then under the stocks folder create a new file called _list.html.erb then fill in the code to display the stocks:</p>
+
+<p>&lt;table class="table table-striped"&gt;<br>&nbsp; &lt;thead&gt;<br>&nbsp; &nbsp; &lt;tr&gt;<br>&nbsp; &nbsp; &nbsp; &lt;th&gt;Name&lt;/th&gt;<br>&nbsp; &nbsp; &nbsp; &lt;th&gt;Symbol&lt;/th&gt;<br>&nbsp; &nbsp; &nbsp; &lt;th&gt;Current Price&lt;/th&gt;<br>&nbsp; &nbsp; &nbsp; &lt;% if @user.id == current_user.id %&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;th&gt;Actions&lt;/th&gt;<br>&nbsp; &nbsp; &nbsp; &lt;% end %&gt;<br>&nbsp; &nbsp; &lt;/tr&gt;<br>&nbsp; &lt;/thead&gt;<br>&nbsp; &lt;tbody&gt;<br>&nbsp; &nbsp; &lt;% @user_stocks.each do |user_stock| %&gt;<br>&nbsp; &nbsp; &nbsp; &lt;tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;td&gt;&lt;%= user_stock.name %&gt;&lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;td&gt;&lt;%= user_stock.ticker %&gt;&lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;td&gt;&lt;%= user_stock.last_price %&gt;&lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;% if @user.id == current_user.id %&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;td&gt;&lt;%= link_to "Delete this stock", user_stock_path(user_stock),&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; method: :delete,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; data: {confirm: "Are you sure?"},&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class: "btn btn-xs btn-danger" %&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;% end %&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/tr&gt;<br>&nbsp; &nbsp; &lt;% end %&gt;<br>&nbsp; &lt;/tbody&gt;<br>&lt;/table&gt;</p>
+
+<p>Go to the users_controller and my_portfolio action and grab the two instance variables necessary:<br>&nbsp; def my_portfolio<br>&nbsp; &nbsp; @user = current_user<br>&nbsp; &nbsp; @user_stocks = current_user.stocks<br>&nbsp; end</p>
+
+<p>Go to config/routes.rb file and add the destroy route for user_stocks<br>resources :user_stocks, only: [:create, :destroy]</p>
+
+<p>Add the destroy action in the user_stocks.rb controller file:</p>
+
+<p>&nbsp; def destroy<br>&nbsp; &nbsp; stock = Stock.find(params[:id])<br>&nbsp; &nbsp; @user_stock = UserStock.where(user_id: current_user.id, stock_id: stock.id).first<br>&nbsp; &nbsp; @user_stock.destroy<br>&nbsp; &nbsp; flash[:notice] = "Stock was successfully removed from portfolio"<br>&nbsp; &nbsp; redirect_to my_portfolio_path<br>&nbsp; end</p>

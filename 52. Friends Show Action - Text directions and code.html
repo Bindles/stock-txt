@@ -1,0 +1,13 @@
+<p>Add the show action in the users_controller.rb file</p>
+
+<p>def show<br>&nbsp; @user = User.find(params[:id])<br>&nbsp; @user_stocks = @user.stocks<br>end</p>
+
+<p>Update the _result.html.erb partial (views/friends folder) where it links to&nbsp;<br>"View profile", add the view profile route<br>&nbsp; &lt;td&gt;&lt;strong&gt;Profile:&lt;/strong&gt; &lt;%= link_to "View Profile", user_path(user),<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class: "btn btn-xs btn-success" %&gt;</p>
+
+<p>Under app/views/users folder add the show.html.erb file and fill it in:<br>&lt;h2&gt;User Details&lt;/h2&gt;&nbsp;</p>
+
+<p>&lt;dl class="dl-horizontal"&gt;&nbsp;<br>&nbsp; &lt;dt&gt;&lt;strong&gt;Full Name&lt;/strong&gt;&lt;/dt&gt;&nbsp;<br>&nbsp; &lt;dd&gt;&lt;%= @user.full_name %&gt;&lt;/dd&gt;&nbsp;<br>&nbsp; &lt;dt&gt;&lt;strong&gt;Email&lt;/strong&gt;&lt;/dt&gt;&nbsp;<br>&nbsp; &lt;dd&gt;&lt;%= @user.email %&gt;&lt;/dd&gt;&nbsp;<br>&lt;/dl&gt;&nbsp;</p>
+
+<p>&lt;% if @user.stocks.size &gt; 0 %&gt;&nbsp;<br>&nbsp; &lt;%= render 'stocks/list' %&gt;&nbsp;<br>&lt;% else %&gt;&nbsp;<br>&nbsp; &lt;p class="lead"&gt;This user is not tracking any stocks&lt;/p&gt;&nbsp;<br>&lt;% end %&gt;&nbsp;</p>
+
+<p>&lt;%= link_to "Back", my_friends_path, class: "btn btn-primary" %&gt;</p>

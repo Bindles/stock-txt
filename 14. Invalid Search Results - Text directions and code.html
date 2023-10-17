@@ -1,0 +1,7 @@
+<p>Update the search method in stocks_controller to deal with empty & incorrect search strings:</p>
+
+<p>def search<br>&nbsp; if params[:stock].present?<br>&nbsp; &nbsp; @stock = Stock.new_from_lookup(params[:stock])<br>&nbsp; &nbsp; if @stock<br>&nbsp; &nbsp; &nbsp; render 'users/my_portfolio'<br>&nbsp; &nbsp; else<br>&nbsp; &nbsp; &nbsp; flash[:danger] = "You have entered an incorrect symbol"<br>&nbsp; &nbsp; &nbsp; redirect_to my_portfolio_path<br>&nbsp; &nbsp; end<br>&nbsp; else<br>&nbsp; &nbsp; flash[:danger] = "You have entered an empty search string"<br>&nbsp; &nbsp; redirect_to my_portfolio_path<br>&nbsp; end<br>end</p>
+
+<p>Then in my_portfolio.html.erb add the display for results in an if block to look for @stock<br>&lt;% if @stock %&gt;<br>&nbsp; &lt;div class="well results-block"&gt;<br>&nbsp; &nbsp; &lt;strong&gt;Symbol: &lt;/strong&gt; &lt;%= @stock.ticker %&gt;<br>&nbsp; &nbsp; &lt;strong&gt;Name: &lt;/strong&gt; &lt;%= @stock.name %&gt;<br>&nbsp; &nbsp; &lt;strong&gt;Price: &lt;/strong&gt; &lt;%= @stock.last_price %&gt;<br>&nbsp; &lt;/div&gt;<br>&lt;% end %&gt;</p>
+
+<p>Update new_from_lookup method to deal with exception scenario:<br>def self.new_from_lookup(ticker_symbol)<br>&nbsp; begin<br>&nbsp; &nbsp; looked_up_stock = StockQuote::Stock.quote(ticker_symbol)<br>&nbsp; &nbsp; price = strip_commas(looked_up_stock.l)<br>&nbsp; &nbsp; new(name: looked_up_stock.name, ticker: looked_up_stock.symbol, last_price: price)<br>&nbsp; rescue Exception =&gt; e<br>&nbsp; &nbsp; return nil<br>&nbsp; end<br>end</p>

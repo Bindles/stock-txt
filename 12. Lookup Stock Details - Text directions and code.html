@@ -1,0 +1,57 @@
+<p>Add the route for search_stocks in config/routes.rb file:<br>get 'search_stocks', to: 'stocks#search'</p>
+
+<p>Now you have to build the stocks_controller.rb file under app/controllers and fill it in:<br>class StocksController &lt; ApplicationController<br>  <br>  def search<br>    @stock = Stock.new_from_lookup(params[:stock])<br>    render 'users/my_portfolio'<br>  end</p>
+
+
+
+
+
+<p>end</p>
+
+
+
+
+
+<p><strong>IMPORTANT: Please reference github repo of the stock_quote gem if a certain method no longer works. The stock_quote gem documentation is updated pretty regularly</strong></p><p>Update the form code in your my_portfolio view for stocks by changing the form_tag line to look like below:<br>&lt;%= form_tag search_stocks_path, method: :get, id: "stock-lookup-form" do %&gt;</p>
+
+
+
+
+
+<p>Add the new_from_lookup and strip_commas methods in your stock model to perform the search:</p>
+
+
+
+
+
+<p>  def self.new_from_lookup(ticker_symbol)<br>    looked_up_stock = StockQuote::Stock.quote(ticker_symbol)<br>    price = strip_commas(looked_up_stock.l)<br>    new(name: looked_up_stock.name, ticker: looked_up_stock.symbol, last_price: price)<br>  end</p><p>## It's come to our attention that the code above may not work due to latest updates with the gem, try below:</p><p>    def self.new_from_lookup(ticker_symbol)<br>        looked_up_stock = StockQuote::Stock.quote(ticker_symbol)<br>        new(name: looked_up_stock.company_name, ticker: looked_up_stock.symbol, last_price: looked_up_stock.latest_price)<br>    end<br></p><p>##</p>
+
+
+
+
+
+<p>  def self.strip_commas(number)<br>    number.gsub(",", "")<br>  end</p>
+
+
+
+
+
+<p>In your my_portfolio at the bottom of the page add some code to display the results block:<br>&lt;div class="well results-block"&gt;<br>  &lt;strong&gt;Symbol: &lt;/strong&gt; &lt;%= @stock.ticker %&gt;<br>  &lt;strong&gt;Name: &lt;/strong&gt; &lt;%= @stock.name %&gt;<br>  &lt;strong&gt;Price: &lt;/strong&gt; &lt;%= @stock.last_price %&gt;<br>&lt;/div&gt;</p>
+
+
+
+
+
+<p>Add some styling, go to app/assets/application.css file (rename it to application.css.scss):</p>
+
+
+
+
+
+<p>.results-block {<br>  display: inline-block;<br>}</p>
+
+
+
+
+
+<p>.no-padding {<br>  padding: 0 !important;<br>}</p>

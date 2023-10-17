@@ -1,0 +1,15 @@
+<p>Add the render lookup line at the top of the my_friends.html.erb view:<br>&lt;%= render 'friends/lookup' %&gt;</p>
+
+<p>Copy the form code for search for stocks from users/my_portfolio.html.erb. Create<br>a new folder under views called friends and within it a partial _lookup.html.erb,<br>paste the code here and tailor it:</p>
+
+<p>&lt;h3&gt;Search for Friends&lt;/h3&gt;<br>&lt;div id="friend-lookup"&gt;<br>&nbsp; &lt;%= form_tag search_friends_path, remote: true, method: :get, id: 'friend-lookup-form' do %&gt;<br>&nbsp; &nbsp; &lt;div class="form-group row no-padding text-center col-md-12"&gt;<br>&nbsp; &nbsp; &nbsp; &lt;div class="col-md-10"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;%= text_field_tag :search_param, params[:search_param],&nbsp;</p><p>placeholder: "Enter name or email", autofocus: true,&nbsp;</p><p>class: "form-control search-box input-lg" %&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &lt;div class="col-md-2"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;%= button_tag(type: :submit, class: "btn btn-lg btn-success") do %&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class="fa fa-search"&gt;&lt;/i&gt; Search<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;% end %&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &lt;% end %&gt;<br>&lt;/div&gt;</p>
+
+<p>Add the search friends path in the config/routes.rb file:</p>
+
+<p>get 'search_friends', to: 'users#search'</p>
+
+<p>Add the search action in the users_controller.rb file</p>
+
+<p>def search</p>
+
+<p>end</p>

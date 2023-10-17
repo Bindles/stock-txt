@@ -1,0 +1,49 @@
+<p>In your gemfile, add the devise gem:</p>
+
+<p>gem 'devise'</p>
+
+<p>Then run:</p>
+
+<p>bundle install --without production</p>
+
+<p>Then install devise in your application:</p>
+
+<p>rails generate devise:install</p>
+
+<p>rails generate devise User</p>
+
+<p>rake db:migrate to add users table</p>
+
+<p>Add the following line to the application_controller.rb file under app/controllers:</p>
+
+<p>before_action :authenticate_user! </p>
+
+<p>Add a logout link to the homepage which is the index.html.erb view under app/views/welcome folder:</p>
+
+<p>&lt;%= link_to "logout", destroy_user_session_path, method: :delete %&gt;</p>
+
+<p>Add gem 'twitter-bootstrap-rails' in your gemfile and bundle install --without production </p><p>If using Rails 5, also add gem 'jquery-rails' under gem 'twitter-bootstrap-rails', then run bundle install</p>
+
+<p>Then run the following commands:</p>
+
+<p>rails generate bootstrap:install static</p>
+
+<p>rails g bootstrap:layout application</p>
+
+<p>override using Y</p><p>Then add gem 'devise-bootstrap-views' in your gemfile and bundle install --without production</p><p>Under your app/assets/stylesheets folder, add the following line to your application.css file above the *= require_tree . line:<br></p>
+
+<p>*= require devise_bootstrap_views </p><p>If using Rails 5, go over to your app/assets/javascripts/application.js file and add the following two lines:</p><p>//= require jquery<br>//= require twitter/bootstrap</p><p>Under the line that say //= require rails-ujs</p>
+
+<p>Then run the following two commands from the terminal:</p>
+
+<p>rails g devise:views:locale en</p>
+
+<p>rails g devise:views:bootstrap_templates</p>
+
+<p>In your config/routes.rb file add the following line (it should already exist, confirm that it's there):</p>
+
+<p>devise_for :users</p><p>Test out in your local, if you are using Rails 5 and you get an error when you preview that is complaining about favicon assets not being present, you can simply remove these lines from your app/views/layouts/application.html.erb (usually between lines 14 and 30) that reference favicon_link_tags, there are usually 5</p>
+
+<p>Do a commit if everything's working in local preview and deploy to heroku and test out authentication by signing up some users and then logging in/out (don't forget to run your migrations in heroku after deployment)</p>
+
+<p>A problem faced here by students is after adding the before_action :authenticate_user! in the application controller, the check doesn't seem to be working. Also, the logout link may generate an error "No route matches [GET] "/users/sign_out" even with the method: :delete. If you face this error, the issue may be the following: The welcome controller was inheriting from ActionController::Base instead of ApplicationController, once you correct this it should work</p>

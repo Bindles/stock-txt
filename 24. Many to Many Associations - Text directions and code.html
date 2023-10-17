@@ -1,0 +1,27 @@
+<p>First generate the association<br>rails generate model UserStock user:references stock:references</p>
+
+<p>Run the migration:<br>Rails 4: rake db:migrate<br>Rails 5: rails db:migrate</p>
+
+<p>Add the association code in the stock.rb model file:</p>
+
+<p>has_many :user_stocks<br>has_many :users, through: :user_stocks</p>
+
+<p>In the user.rb model file:</p>
+
+<p>has_many :user_stocks<br>has_many :stocks, through: :user_stocks</p>
+
+<p>Jump to the console and test it out:<br>UserStock.all<br>UserStock</p>
+
+<p>user = User.first<br>user.stocks</p>
+
+<p>Update the _result.html.erb partial under app/views/users folder and add the route to add the stock to the portfolio of the user after the display of price:<br>&lt;%= link_to "Add to my stocks", user_stocks_path(user: current_user,&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; stock_ticker: @stock.ticker),<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class: "btn btn-xs btn-success",&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; method: :post %&gt;</p>
+
+<p>Add the route in the config/routes.rb file<br>resources :user_stocks, only: [:create]</p>
+
+<p>Now add the controller:<br>rails generate controller UserStocks</p>
+
+<p>Then add the create action within it:<br>&nbsp; def create<br>&nbsp; &nbsp; stock = Stock.find_by_ticker(params[:stock_ticker])<br>&nbsp; &nbsp; if stock.blank?<br>&nbsp; &nbsp; &nbsp; stock = Stock.new_from_lookup(params[:stock_ticker])<br>&nbsp; &nbsp; &nbsp; stock.save<br>&nbsp; &nbsp; end<br>&nbsp; &nbsp; @user_stock = UserStock.create(user: current_user, stock: stock)<br>&nbsp; &nbsp; flash[:success] = "Stock #{@user_stock.stock.name} was successfully added to portfolio"<br>&nbsp; &nbsp; redirect_to my_portfolio_path<br>&nbsp; end</p>
+
+<p>Add the find_by_ticker method in the stock.rb model file:</p>
+
+<p>&nbsp; def self.find_by_ticker(ticker_symbol)<br>&nbsp; &nbsp; where(ticker: ticker_symbol).first<br>&nbsp; end</p>

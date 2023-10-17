@@ -1,0 +1,7 @@
+<p>Add the add_friend method in the users_controller.rb file:<br>&nbsp; def add_friend<br>&nbsp; &nbsp; @friend = User.find(params[:friend])<br>&nbsp; &nbsp; current_user.friendships.build(friend_id: @friend.id)<br>&nbsp; &nbsp; if current_user.save<br>&nbsp; &nbsp; &nbsp; flash[:notice] = "Friend was successfully added"<br>&nbsp; &nbsp; else<br>&nbsp; &nbsp; &nbsp; flash[:danger] = "There was something wrong with the friend request"<br>&nbsp; &nbsp; end&nbsp;&nbsp;<br>&nbsp; &nbsp; redirect_to my_friends_path<br>&nbsp; end</p>
+
+<p>Under controllers, add a friendships_controller.rb file and fill it in:</p>
+
+<p>class FriendshipsController &lt; ApplicationController<br>&nbsp;&nbsp;<br>&nbsp; def destroy<br>&nbsp; &nbsp; @friendship = current_user.friendships.where(friend_id: params[:id]).first<br>&nbsp; &nbsp; @friendship.destroy<br>&nbsp; &nbsp; flash[:notice] = "Friend was successfully removed"<br>&nbsp; &nbsp; redirect_to my_friends_path<br>&nbsp; end<br>&nbsp;&nbsp;<br>end</p>
+
+<p>Under _result.html.erb add in the additional check for &lt;% if @users.size &gt; 0 %&gt;<br>after &lt;% if @users %&gt;, then ensure you add in the &lt;% end %&gt; tag for that branch</p>

@@ -1,0 +1,95 @@
+<p>Remove the sidebar div from the application.html.erb file under app/views/layouts folder</p>
+
+<p>Remove(or code out) the following code for forgot your password link from the _links.html.erb partial under the app/views/devise/shared folder:</p>
+
+
+
+<p>&lt;%- if devise_mapping.recoverable? &amp;&amp; controller_name != 'passwords' %&gt;</p>
+
+
+
+<p>&lt;%= link_to t(".forgot_your_password", :default =&gt; "Forgot your password?"), new_password_path(resource_name) </p>
+
+
+
+<p>%&gt;&lt;br /&gt;</p>
+
+
+
+<p>&lt;% end -%&gt; </p>
+
+
+
+<p>Generate Stock model:</p>
+
+
+
+<p>rails g model Stock ticker:string name:string last_price:decimal</p>
+
+
+
+<p>Create the table by running the migration:</p>
+
+
+
+<p>rake db:migrate</p>
+
+
+
+<p>Add gem 'stock_quote' to your gemfile and run bundle install --without production</p>
+
+
+
+<p><strong>IMPORTANT: Please review the stock_quote gem documentation in Github as the methods change from time to time</strong></p><p>Hop on rails console to get stock price for a stock:</p>
+
+
+
+<p>StockQuote::Stock.quote("symbol")</p>
+
+
+
+<p>StockQuote::Stock.quote("symbol").op</p>
+
+
+
+<p>StockQuote::Stock.quote("symbol").l # (This has now changed to .last_price, but subject to change again, please check the documentation on github)</p>
+
+
+
+<p>Now need to add a view page for my portfolio, we'll call it my portfolio, so go to config/routes.rb file and add in the following route:</p>
+
+
+
+<p>get 'my_portfolio', to: 'users#my_portfolio'</p>
+
+
+
+<p>Create a users_controller.rb file under app/controllers and add in my_portfolio action:</p>
+
+
+
+<p>class UsersController &lt; ApplicationController</p>
+
+
+
+<p>  def my_portfolio</p>
+
+
+
+<p>  end</p>
+
+
+
+<p>end</p>
+
+
+
+<p>under views add users folder and under it create a my_portfolio.html.erb file and fill it in:</p>
+
+
+
+<p>&lt;h1&gt;My Portfolio&lt;/h1&gt;</p>
+
+
+
+<p>You may add this as your root route in your config/routes.rb file by changing root to users#my_portfolio</p>

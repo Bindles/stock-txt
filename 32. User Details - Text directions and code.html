@@ -1,0 +1,23 @@
+<p>First generate the migration file:<br>rails generate migration add_first_and_last_name_to_users</p>
+
+<p>Pull up the migration file created and add the columns:<br>&nbsp; def change<br>&nbsp; &nbsp; add_column :users, :first_name, :string<br>&nbsp; &nbsp; add_column :users, :last_name, :string<br>&nbsp; end</p>
+
+<p>Run the migration:<br>rake db:migrate<br>Rails 5-&gt; rails db:migrate</p>
+
+<p>Add the method to return full name in the user.rb model file:</p>
+
+<p>&nbsp; def full_name<br>&nbsp; &nbsp; return "#{first_name} #{last_name}".strip if (first_name || last_name)<br>&nbsp; &nbsp; "Anonymous"<br>&nbsp; end</p>
+
+<p>Update the registrations views to add these fields when users are signing up<br>or editing their accounts, go to app/views/devise/registrations/new.html.erb and<br>edit.html.erb. Add these fields in right under email:<br>&nbsp; &lt;div class="form-group"&gt;<br>&nbsp; &nbsp; &lt;div class="col-md-6 no-padding"&gt;<br>&nbsp; &nbsp; &nbsp; &lt;%= f.label :first_name %&gt;<br>&nbsp; &nbsp; &nbsp; &lt;%= f.text_field :first_name, class: 'form-control' %&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>&nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &lt;div class="col-md-6 no-padding left-padding"&gt;<br>&nbsp; &nbsp; &nbsp; &lt;%= f.label :last_name %&gt;<br>&nbsp; &nbsp; &nbsp; &lt;%= f.text_field :last_name, class: 'form-control' %&gt;<br>&nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &lt;/div&gt;</p>
+
+<p>Add in the styling in either custom.css.scss or application.css.scss:</p>
+
+<p>.no-padding {<br>&nbsp; padding: 0 !important;<br>}</p>
+
+<p>.left-padding {<br>&nbsp; padding-left: 15px !important;<br>}</p>
+
+<p>Now we need to create a new folder under app/controllers and call in user, within it create<br>a registrations_controller.rb file and fill it in:</p>
+
+<p>class User::RegistrationsController &lt; Devise::RegistrationsController<br>&nbsp; before_action :configure_permitted_parameters<br>&nbsp;&nbsp;<br>&nbsp; protected<br>&nbsp;&nbsp;<br>&nbsp; def configure_permitted_parameters<br>&nbsp; &nbsp; devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name])<br>&nbsp; &nbsp; devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name])<br>&nbsp; end<br>&nbsp;&nbsp;<br>end</p>
+
+<p>Update the config/routes.rb file for devise_for :users -&gt;<br>devise_for :users, :controllers =&gt; { :registrations =&gt; "user/registrations" }</p>
